@@ -4,16 +4,21 @@ import Select from "react-select";
 import {useEffect, useState} from "react";
 import {saveUserPreferences} from "../../store/users.store";
 import {getFromLocalStorage} from "../../utils/local-storage";
+import {getSources} from "../../store/sources.store";
 
 const Account = () => {
     const dispatch = useDispatch()
     const [selectedAuthorOptions, setSelectedAuthorOptions] = useState([]);
     const [selectedCategoryOptions, setSelectedCategoryOptions] = useState([]);
+    const [selectedSourceOptions, setSelectedSourceOptions] = useState([]);
     const [authorSearch, setAuthorSearch] = useState('');
     const authors = useSelector((state) => state?.authors?.data)
     const categories = useSelector((state) => state?.categories?.data)
+    const sources = useSelector((state) => state?.sources?.data)
     const [options, setOptions] = useState([])
     const [categoryOptions, setCategoryOptions] = useState([])
+    const [sourceOptions, setSourceOptions] = useState([])
+    const [sourcesLoaded, setSourcesLoaded] = useState(false)
     const user = getFromLocalStorage('user')
     const mapAuthors = () => {
 
@@ -37,6 +42,17 @@ const Account = () => {
         setCategoryOptions(mapped)
     }
 
+    const mapSources = () => {
+        let mapped = sources?.map((source) => {
+            return {
+                value: source?.id,
+                label: source?.name
+            }
+        })
+        setSourceOptions(mapped)
+        setSourcesLoaded(true)
+    }
+
     useEffect(() => {
         dispatch({
             type: 'authors/filters',
@@ -44,14 +60,24 @@ const Account = () => {
                 search: authorSearch
             }
         })
+
         dispatch(getAuthors()).then(() => {
             mapAuthors()
         })
+
     }, [authorSearch])
 
     useEffect(() => {
         mapCategories()
     }, [categories])
+
+    useEffect(() => {
+        mapSources()
+    }, [sources])
+
+    useEffect(() => {
+        dispatch(getSources())
+    }, [])
 
     function savePreferences(e) {
         e.preventDefault()
@@ -59,10 +85,10 @@ const Account = () => {
             type: 'preferences/form',
             payload: {
                 authors: selectedAuthorOptions,
-                categories: selectedCategoryOptions
+                categories: selectedCategoryOptions,
+                sources: selectedSourceOptions
             }
         })
-
         dispatch(saveUserPreferences())
     }
 
@@ -103,6 +129,18 @@ const Account = () => {
                                                 value={selectedCategoryOptions}
                                                 isMulti
                                             />
+                                        </div>
+                                        <div className="form-group">
+                                            {sourcesLoaded && <>
+                                                <label htmlFor="" className={'col-form-label'}>Select Sources</label>
+                                                <Select
+                                                    placeholder={'Select Source'}
+                                                    options={sourceOptions}
+                                                    onChange={setSelectedSourceOptions}
+                                                    value={selectedSourceOptions}
+                                                    isMulti
+                                                />
+                                            </>}
                                         </div>
                                         <div className="form-group">
                                             <button className={' button button-contactForm btn-block'}>
