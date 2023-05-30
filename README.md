@@ -8,3 +8,15 @@ How to run:
 
 Once the container is up and running, click on the url provided in the console
 to see UI. or visit http://localhost:3000/
+
+# Images / Screenshots
+![Screenshot](screenshots/login.png)
+![Screenshot](screenshots/loginerror.png)
+![Screenshot](screenshots/preferences.png)
+![Screenshot](screenshots/Preferences-select.png)
+![Screenshot](screenshots/signup.png)
+![Screenshot](screenshots/signup-error.png)
+![Screenshot](screenshots/signup-error-.png)
+![Screenshot](screenshots/articledetail.png)
+![Screenshot](screenshots/category.png)
+
