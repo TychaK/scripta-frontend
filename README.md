@@ -5,3 +5,6 @@ How to run:
 3. ### npm install
 4. ### docker compose -f docker-compose.yml up --build
 5. ### docker-compose up
+
+Once the container is up and running, click on the url provided in the console
+to see UI. or visit http://localhost:3000/
