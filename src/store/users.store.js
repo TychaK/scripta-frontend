@@ -83,6 +83,7 @@ const usersSlice = createSlice({
             state.loading = false
             state.user = action?.payload
             state.status = "success"
+            Notify({status: 200, message: action?.payload?.message})
         })
 
         builder.addCase(createUser.rejected, (state, action) => {
